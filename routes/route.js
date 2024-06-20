@@ -8,7 +8,7 @@ import fileUpload from "express-fileupload";
 cloudinary.config({ 
     cloud_name: 'swakshan', 
     api_key: '291447395917276', 
-    api_secret: 'ElUzqK00GSbEgPDnFjMZjDCY06E'
+    api_secret: process.env.apisecretkey
   });
 
 
