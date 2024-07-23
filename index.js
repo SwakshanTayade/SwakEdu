@@ -5,15 +5,21 @@ import router from "./routes/route.js";
 import {config} from "dotenv";
 import fileUpload from "express-fileupload";
 export const app = express();
-
+import cors from 'cors'
 
 config({
     path:"./data/config.env"
 })
 
+
 const port = 3000;
 
 app.use(express.static(path.join(path.resolve(),"public")))
+app.use(cors({
+    origin:[""],
+    methods:["POST","GET"],
+    credentials: true
+}))
 console.log(path.join(path.resolve(),"public"));
 app.use(fileUpload({
     useTempFiles:true
