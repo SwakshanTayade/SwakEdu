@@ -20,11 +20,13 @@ app.use(cors({
     methods:["POST","GET"],
     credentials: true
 }))
-console.log(path.join(path.resolve(),"public"));
+// console.log(path.join(path.resolve(),"public"));
 app.use(fileUpload({
     useTempFiles:true
 }))
 app.set('view engine','ejs')
+
+app.set('views', path.join(path.resolve(),"views"))
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 // app.use(express.static('public'))
