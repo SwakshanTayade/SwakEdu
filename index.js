@@ -4,9 +4,9 @@ import CookieParser from "cookie-parser";
 import router from "./routes/route.js";
 import {config} from "dotenv";
 import fileUpload from "express-fileupload";
-export const app = express();
 import cors from 'cors'
 
+const app = express();
 config({
     path:"./data/config.env"
 })
