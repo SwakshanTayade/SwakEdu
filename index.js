@@ -32,6 +32,7 @@ app.use(CookieParser());
 
 app.use(router);
 
+export default app;
 
 
 
