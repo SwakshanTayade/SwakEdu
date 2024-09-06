@@ -1,5 +1,5 @@
 import express, { urlencoded } from "express";
-import { adminDashboard, createCourse, deleteCard, followers, logout, mainPage, mentorLogin, mentorRegister, playVideo, search, showVideo, userDashboard, userLogin, userRegister, usersAndmentors } from "../controllers/user.js";
+import { adminDashboard, createCourse, deleteCard, followers, logout, mainPage, mentorLogin, mentorRegister, playVideo, search, showVideo, userDashboard, userLogin, userRegister } from "../controllers/user.js";
 import jwt from "jsonwebtoken";
 import { User } from "../models/user.js";
 import { mentorD } from "../models/mentor.js";
@@ -81,7 +81,30 @@ router.get('/adminDashboard',adminAuth,adminDashboard)
 router.get('/userDashboard',isAuth,userDashboard)
 
 router.get('/followers',followers)
-router.get('/usersAndmentors',findToken,usersAndmentors)
+router.get('/usersAndmentors',findToken,async(req,res)=>{
+
+    const [rootUser, rootMentor] = await Promise.all([
+        User.findById(req.User._id).exec(),
+        mentorD.findById(req.User._id).exec
+    ])
+
+    const userFilter = rootUser ? {_id:{$ne:rootUser._id}}:{}
+    const mentorFilter = rootMentor ? {_id:{$ne:rootMentor._id}}:{}
+
+    const [users,mentor] = await Promise.all([
+        User.find(userFilter).exec(),
+        mentorD.find(mentorFilter).exec()
+    ])
+    const {token,token2} = req.cookies; 
+     
+    res.render("usersAndmentors",{
+        users,
+        mentor,
+        token,
+        token2      
+    })
+     
+})
 
 router.get('/register',(req,res)=>{
     res.render("register")
@@ -109,25 +132,24 @@ router.get("/search", search);
 router.post('/people', findToken,async(req,res)=>{
 
     const {id} = req.body;
-    console.log("the body is",id);
-    const people = await mentorD.findById(id);
-    const people2 = await User.findById(id);
-    console.log(req.User);
-    if(people||people2) console.log("HO boi");
-    else{
-        res.redirect("/");
+
+    console.log("the id in people body is",id);
+    try{
+        await Promise.all([
+            User.findById(id).exec(),
+            mentorD.findById(id).exec(),
+            User.findByIdAndUpdate(req.User._id,{$addToSet:{following:id}}),
+            User.findByIdAndUpdate(id,{$addToSet:{followers:req.User._id}}),
+            mentorD.findByIdAndUpdate(req.User._id,{$addToSet:{following:id}}),
+            mentorD.findByIdAndUpdate(id,{$addToSet:{followers:req.User._id}}),
+        ])
+        res.redirect('/usersAndmentors');
+    }catch(err) {
+        console.log("error");
+        res.redirect('/usersAndmentors');
+        
     }
 
-    const temp = req.User._id;
-
-    console.log(id,"===",temp);
-    console.log(typeof(id));
-    console.log(typeof(temp));
-    if(temp == id) res.redirect('/');
-    else {
-        await User.findByIdAndUpdate(req.User._id,{$addToSet:{following:id}})
-    res.redirect('/usersAndmentors');
-    }
 })
 
 router.post("/registerVideo",isAuth,async(req,res)=>{

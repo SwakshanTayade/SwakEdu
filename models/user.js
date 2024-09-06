@@ -23,7 +23,10 @@ const userSchema = new mongoose.Schema({
         {
             type:mongoose.Schema.Types.ObjectId,
         }
-    ]
+    ],
+    followers:[{
+        type:mongoose.Schema.Types.ObjectId,
+    }],
 })
 
 export const User = mongoose.model("User",userSchema);

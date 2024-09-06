@@ -1,6 +1,6 @@
 import { course } from "../models/admin.js";
 import { mentorD } from "../models/mentor.js";
-import { User } from "../models/user.js";
+import {User} from "../models/user.js";
 import jwt  from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import cookieParser from "cookie-parser";
@@ -29,16 +29,6 @@ export const followers = async(req,res)=>{
     res.render('followers')
 }
 
-export const usersAndmentors = async(req,res)=>{
-
-    const users =await User.find({}).exec();
-    const mentor = await mentorD.find({}).exec();
-
-    res.render('usersAndmentors',{
-        users,
-        mentor
-    })
-}
 
 export const userDashboard = async(req,res)=>{
     
@@ -50,6 +40,7 @@ export const userDashboard = async(req,res)=>{
     const address = req.User.address;
     const url = req.User.url;
     const following = req.User.following.length
+    const followers = req.User.followers.length
     const registeredCourses = req.User.registeredCourses.map(course => course._id);
 
     console.log(typeof(following));
@@ -71,6 +62,7 @@ export const userDashboard = async(req,res)=>{
         url,
         allcourses,
         following,
+        followers
     })
 }
 export const adminDashboard = async(req,res)=>{
@@ -162,7 +154,8 @@ export const showVideo = (req,res)=>{
 
 export const playVideo = (req,res)=>{
     
-    const {link} = req.body;
+    try{
+        const {link} = req.body;
     const {token,token2} = req.cookies;
     console.log("The links are: ",videArr);
     console.log("The link is: ",link);
@@ -173,6 +166,9 @@ export const playVideo = (req,res)=>{
         token,
         token2
     })
+    }catch(err) {
+        res.redirect('/')
+    }
 }
 
 export const createCourse = async (req,res)=>{
@@ -244,7 +240,8 @@ export const userLogin = async (req,res)=>{
 
 export const mentorLogin = async(req,res)=>{
 
-    const {email,password} = req.body;
+    try{
+        const {email,password} = req.body;
 
     const findEmail = await mentorD.findOne({email});
 
@@ -273,11 +270,14 @@ export const mentorLogin = async(req,res)=>{
         expires: new Date(Date.now() + 60*100000)
     })
     res.redirect("/adminPage")
+    }catch(err) {
+        res.redirect('/loginMentor');
+    }
 }
 
 export const userRegister = async (req,res)=>{
-
-    const {name,email,password,cpassword,address,url} = req.body;
+    try{
+        const {name,email,password,cpassword,address,url} = req.body;
 
     const findEmail = await User.findOne({email});
     const findName = await User.findOne({name});
@@ -312,11 +312,16 @@ export const userRegister = async (req,res)=>{
     //     expires: new Date(Date.now() + 60*100000)
     // })
     res.redirect('/login');
+    }catch(err) {
+        res.redirect('/register');
+    }
+    
 }
 
 export const mentorRegister = async(req,res)=>{
 
-    const {name,email,password,cpassword,address} = req.body;
+    try{
+        const {name,email,password,cpassword,address} = req.body;
 
     const findEmail = await mentorD.findOne({email});
     const findName = await mentorD.findOne({name});
@@ -341,5 +346,8 @@ export const mentorRegister = async(req,res)=>{
         address
     })
     res.redirect('/loginMentor');
+    }catch(err) {
+        res.redirect('/registerMentor');
+    }
 
 }

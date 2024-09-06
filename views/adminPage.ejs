@@ -70,6 +70,17 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/adminPage">Mentor</a>
                     </li>
+                    
+                    <% if(token) {%>
+                      <li class="nav-item">
+                        <a class="nav-link" href="/userDashboard"> <i class="fa-solid fa-circle-user" style="font-size: xx-large;"></i> </a>
+                      </li>
+                      <% } %>
+                    <% if(token2) {%>
+                      <li class="nav-item">
+                        <a class="nav-link" href="/adminDashboard"> <i class="fa-solid fa-circle-user" style="font-size: xx-large;"></i> </a>
+                      </li>
+                      <% } %>
                 </ul>
                 <form class="d-flex">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

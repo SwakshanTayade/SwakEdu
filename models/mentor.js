@@ -15,6 +15,12 @@ const mentorSchema = new mongoose.Schema({
     cpassword:String,
     address:String,
     url:String,
+    following:[{
+        type:mongoose.Schema.Types.ObjectId
+    }],
+    followers:[{
+        type:mongoose.Schema.Types.ObjectId
+    }]
 })
 
 
