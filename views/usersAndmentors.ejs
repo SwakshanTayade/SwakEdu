@@ -128,7 +128,9 @@
               <!-- <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> -->
               <form action="/people" method="post">
                 <input type="text" name="id" value="<%= user._id %>" hidden>
-                <button class="btn btn-primary">Follow</button>
+                <button class="btn btn-primary">
+                  <%= locals.isFollowing ? 'Following':'Follow' %>
+                </button>
               </form>
             </div>
           </div>

@@ -82,9 +82,12 @@
                         <a class="nav-link" href="/register">Register</a>
                     </li> -->
                     <li class="nav-item">
-                      <a class="nav-link" href="/adminPage">Mentor</a>
+                      <a class="nav-link" href="/adminPage">Create Course</a>
                     </li>
-                    <% if(token2) {%>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/usersAndmentors">People</a>
+                    </li>
+                    <% if(locals.token2) {%>
                       <li class="nav-item">
                         <a class="nav-link" href="/adminDashboard"> <i class="fa-solid fa-circle-user" style="font-size: xx-large;"></i> </a>
                       </li>
@@ -130,11 +133,11 @@
                             <div class="row" >
                                 <div class="col-5 text-md-center">
                                     <li class="list-group-item fw-bold">Followers</li>
-                                    <li class="list-group-item fw-bold">0</li>
+                                    <li class="list-group-item fw-bold"><%= locals.followers %></li>
                                 </div>
                                 <div class="col-5 text-md-center">
                                     <li class="list-group-item fw-bold">Following</li>
-                                    <li class="list-group-item fw-bold">0</li>
+                                    <li class="list-group-item fw-bold"><%= locals.following %></li>
                                 </div>
                             </div>
                         </div>
@@ -150,7 +153,56 @@
             </div>
 
     </div>
+    <h1  style="text-align: center;">Courses Created</h1>
+    <div class="cards" style=" display: flex; justify-content: center; align-items: center; padding: 2%;  flex-wrap: wrap; ">
+        <% courses.forEach(function(course){%>
+            <div class="card" style=" width: 300px; margin: 10px; height: max-content;">
+                <div class="bg-image">
+                  <img src="<%=course.url  %>" class="card-img-top img" alt="/images/Designer.png" style="max-height: 150px;">
+                </div>
+                <div class="card-body" style=" height: 150px;">
+                    <h5 class="card-title" style="border-bottom: 1px solid gray;"><%=course.courseName  %></h5>
+                    <div class="scrollable-content temp" style="overflow-y:scroll; height: 100px;">
+                        <p class="card-text"><%=course.des  %></p>
+                    </div>
+                </div>
+                <ul class="list-group list-group-flush" style="padding: 2px;">
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <label for=""> Domain:</label>
+                    <li class="list-group-item"><%=course.domain  %></li>
+                  </div>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <label for=""> Instructor:</label>
+                    <li class="list-group-item" ><%=course.insName  %></li>
+                  </div>
+                </ul>
+                <% if(locals.token2) {%>
+                <div class="input-group" style=" padding: 2px; display: flex; align-items: center; justify-content:space-between; ">
+                            <form method="post" action="/showVideo" >
+                                <input type="hidden" name="videoLink" value="<%=course.videoLink %>">
+                                <button type="submit" class="btn btn-primary">Watch</button>
+                            </form>
+                            <form method="post" action="/deleteCard">
+                              <input type="hidden" value="<%=course._id%>" name="id">
+                              <button>
+                                  <i class="fa-solid fa-trash-can"></i>
+                              </button>
+                            </form>
+                  </div>
+                  <% } %>
+                  <% if(locals.token) {%>
+                      <div class="input-group" style=" padding: 2px; display: flex; align-items: center; justify-content:space-between; ">
 
+                        <form method="post" action="/registerVideo" >
+                          <input type="hidden" name="registerVideo" value="<%=course._id%>">
+                          <button type="submit" class="btn btn-primary">Register</button>
+                      </form>
+
+                      </div>
+                    <% } %>
+              </div>
+              <%})%>
+            </div>
     <footer class="page-footer shadow bg-dark text-white">
       <div class="d-flex flex-column mx-auto py-5" style="width: 80%">
         <div class="d-flex flex-wrap justify-content-between">

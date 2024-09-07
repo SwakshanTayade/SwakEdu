@@ -34,26 +34,12 @@ export const userDashboard = async(req,res)=>{
     
     const {token} = req.cookies;
 
-
-    const name = req.User.name;
-    const email = req.User.email;
-    const address = req.User.address;
-    const url = req.User.url;
-    const following = req.User.following.length
-    const followers = req.User.followers.length
+    const {name,email,address,url,followers,following} = req.User;
     const registeredCourses = req.User.registeredCourses.map(course => course._id);
 
-    console.log(typeof(following));
-    console.log(typeof(registeredCourses));
-    // console.log(name);
-    // console.log(email);
-    // console.log(req.User);
     
         
     const allcourses = await course.find({_id:{$in:registeredCourses}}).exec();
-    
-    // console.log("the courses are: ",allcourses);
-    // console.log("the registeredVideos: ",registeredCourses);
     res.render("userDashboard",{
         token,
         name,
@@ -61,23 +47,26 @@ export const userDashboard = async(req,res)=>{
         address,
         url,
         allcourses,
-        following,
-        followers
+        following:following.length,
+        followers:followers.length
     })
 }
 export const adminDashboard = async(req,res)=>{
 
     const {token2} = req.cookies;
-    const {name,email,address,url} = req.User;
-    console.log(token2);
-    console.log(req.User);
+    const {name,email,address,url,followers,following} = req.User;
+    const registeredCourses = req.User.createdCourses.map(course=>course._id);
 
+    const courses = await course.find({_id:{$in:registeredCourses}}).exec();
     res.render('adminDashboard',{
         token2,
         name,
         email,
         address,
-        url
+        url,
+        courses,
+        followers:followers.length,
+        following:following.length
     });
 
 }
@@ -123,7 +112,14 @@ export const search = async (req, res) => {
 export const deleteCard = async (req,res)=>{
 
     const {id} = req.body;
-    const deleteCard = await course.findByIdAndDelete({_id:id});
+    await Promise.all([
+        course.findByIdAndDelete({_id:id}),
+        mentorD.updateMany(
+            { createdCourses: id },  // Find all mentors having this course ID
+            { $pull: { createdCourses: id } } // Remove the ID from the 'createdCourses' array
+        )
+    ]) 
+    
     
     res.redirect('/');
 }
@@ -171,35 +167,7 @@ export const playVideo = (req,res)=>{
     }
 }
 
-export const createCourse = async (req,res)=>{
 
-    const {courseName,insName,url,domain,des,videoLink} = req.body;
-    const {token} = req.cookies;
-    const {token2} = req.cookies;
-
-    const videoLinkArr = videoLink.split(",").map(link=>link.trim())
-
-    const createUser = await course.create({
-        courseName,
-        insName,
-        url,
-        domain,
-        des,
-        videoLink:videoLinkArr,
-    })
-    // res.redirect("/")
-    try{
-        const courses = await course.find({}).exec();
-
-        res.render("main",{
-            courses:courses,
-            token,
-            token2})
-
-    }catch(err) {
-        console.log("error");
-    }
-}
 
 export const userLogin = async (req,res)=>{
     const {email,password} = req.body;

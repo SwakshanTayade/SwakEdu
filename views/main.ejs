@@ -83,17 +83,17 @@
                         <a class="nav-link" href="/register">Register</a>
                     </li> -->
                     <li class="nav-item">
-                      <a class="nav-link" href="/adminPage">Mentor</a>
+                      <a class="nav-link" href="/adminPage">Create Course</a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" href="/usersAndmentors">People</a>
                     </li>
-                    <% if(token) {%>
+                    <% if(locals.token) {%>
                       <li class="nav-item">
                         <a class="nav-link" href="/userDashboard"> <i class="fa-solid fa-circle-user" style="font-size: xx-large;"></i> </a>
                       </li>
                       <% } %>
-                    <% if(token2) {%>
+                    <% if(locals.token2) {%>
                       <li class="nav-item">
                         <a class="nav-link" href="/adminDashboard"> <i class="fa-solid fa-circle-user" style="font-size: xx-large;"></i> </a>
                       </li>
@@ -139,12 +139,7 @@
                                 <input type="hidden" name="videoLink" value="<%=course.videoLink %>">
                                 <button type="submit" class="btn btn-primary">Watch</button>
                             </form>
-                            <form method="post" action="/deleteCard">
-                              <input type="hidden" value="<%=course._id%>" name="id">
-                              <button>
-                                  <i class="fa-solid fa-trash-can"></i>
-                              </button>
-                            </form>
+                            
                   </div>
                   <% } %>
                   <% if(token) {%>

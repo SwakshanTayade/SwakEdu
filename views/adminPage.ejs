@@ -68,15 +68,15 @@
                         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="false"><%=locals.name  %></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/adminPage">Mentor</a>
+                        <a class="nav-link" href="/adminPage">Create Course</a>
                     </li>
                     
-                    <% if(token) {%>
+                    <% if(locals.token) {%>
                       <li class="nav-item">
                         <a class="nav-link" href="/userDashboard"> <i class="fa-solid fa-circle-user" style="font-size: xx-large;"></i> </a>
                       </li>
                       <% } %>
-                    <% if(token2) {%>
+                    <% if(locals.token2) {%>
                       <li class="nav-item">
                         <a class="nav-link" href="/adminDashboard"> <i class="fa-solid fa-circle-user" style="font-size: xx-large;"></i> </a>
                       </li>

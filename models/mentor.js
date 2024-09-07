@@ -20,6 +20,9 @@ const mentorSchema = new mongoose.Schema({
     }],
     followers:[{
         type:mongoose.Schema.Types.ObjectId
+    }],
+    createdCourses:[{
+        type:mongoose.Schema.Types.ObjectId
     }]
 })
 

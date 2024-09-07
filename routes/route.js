@@ -1,8 +1,9 @@
 import express, { urlencoded } from "express";
-import { adminDashboard, createCourse, deleteCard, followers, logout, mainPage, mentorLogin, mentorRegister, playVideo, search, showVideo, userDashboard, userLogin, userRegister } from "../controllers/user.js";
+import { adminDashboard, deleteCard, followers, logout, mainPage, mentorLogin, mentorRegister, playVideo, search, showVideo, userDashboard, userLogin, userRegister } from "../controllers/user.js";
 import jwt from "jsonwebtoken";
 import { User } from "../models/user.js";
 import { mentorD } from "../models/mentor.js";
+import { course } from "../models/admin.js";
 import {v2 as cloudinary} from "cloudinary"
 import { config } from "dotenv";
 import path from "path";
@@ -19,7 +20,6 @@ cloudinary.config({
     secure:true,
   });
 
-  console.log(process.env.CLOUDINARY_API_KEY);
   
 
 const router = express.Router();
@@ -95,7 +95,7 @@ router.get('/usersAndmentors',findToken,async(req,res)=>{
 
     const [rootUser, rootMentor] = await Promise.all([
         User.findById(req.User._id).exec(),
-        mentorD.findById(req.User._id).exec
+        mentorD.findById(req.User._id).exec()
     ])
 
     const userFilter = rootUser ? {_id:{$ne:rootUser._id}}:{}
@@ -145,15 +145,16 @@ router.post('/people', findToken,async(req,res)=>{
 
     console.log("the id in people body is",id);
     try{
+        const isFollowing = req.User.following.includes(id);
         await Promise.all([
-            User.findById(id).exec(),
-            mentorD.findById(id).exec(),
             User.findByIdAndUpdate(req.User._id,{$addToSet:{following:id}}),
             User.findByIdAndUpdate(id,{$addToSet:{followers:req.User._id}}),
             mentorD.findByIdAndUpdate(req.User._id,{$addToSet:{following:id}}),
             mentorD.findByIdAndUpdate(id,{$addToSet:{followers:req.User._id}}),
         ])
-        res.redirect('/usersAndmentors');
+        res.redirect('/usersAndmentors',{
+            isFollowing,
+        });
     }catch(err) {
         console.log("error");
         res.redirect('/usersAndmentors');
@@ -240,7 +241,46 @@ router.post('/deleteCard', deleteCard)
 
 router.post('/showVideo',findToken, showVideo)
 
-router.post('/createCourse',createCourse)
+router.post('/createCourse',findToken,async(req,res)=>{
+    const {courseName,insName,url,domain,des,videoLink} = req.body;
+    const {token} = req.cookies;
+    const {token2} = req.cookies;
+
+    const videoLinkArr = videoLink.split(",").map(link=>link.trim())
+
+    const createCourse = await course.create({
+        courseName,
+        insName,
+        url,
+        domain,
+        des,
+        videoLink:videoLinkArr,
+    })
+    
+    
+    // res.redirect("/")
+    try{
+        console.log("the root User",req.User);
+        console.log("the course",createCourse._id);
+        
+        
+        await mentorD.findByIdAndUpdate(req.User._id,{$addToSet:{createdCourses:createCourse._id}})
+        const {name,email,address,following,followers,registeredCourses} = req.User;
+        const user = await mentorD.findById(req.User._id).exec();
+        const c = user.createdCourses;
+        const courses = await course.find({_id:{$in:c}}).exec(); 
+        res.render("adminDashboard",{
+            name,
+            email,
+            address,
+            followers:followers.length,
+            following:following.length,
+            courses,
+            token2})
+    }catch(err) {
+        console.log("error",err);
+    }
+})
 
 
 router.post('/login', userLogin)
