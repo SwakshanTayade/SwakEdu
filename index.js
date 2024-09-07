@@ -6,10 +6,11 @@ import {config} from "dotenv";
 import fileUpload from "express-fileupload";
 import cors from 'cors'
 
-const app = express();
 config({
-    path:"./data/config.env"
+    path:path.resolve("./data/config.env")
 })
+const app = express();
+
 
 
 const port = 3000;

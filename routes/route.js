@@ -4,13 +4,23 @@ import jwt from "jsonwebtoken";
 import { User } from "../models/user.js";
 import { mentorD } from "../models/mentor.js";
 import {v2 as cloudinary} from "cloudinary"
-import fileUpload from "express-fileupload";
+import { config } from "dotenv";
+import path from "path";
+
+config({
+    path:path.resolve("../data/config.env")
+})
+
+
 cloudinary.config({ 
-    cloud_name: 'swakshan', 
-    api_key: process.env.apikey, 
-    api_secret: process.env.apisecretkey
+    cloud_name: process.env.CLOUDINARY_NAME, 
+    api_key: process.env.CLOUDINARY_API_KEY, 
+    api_secret: process.env.CLOUDINARY_API_SECRET, 
+    secure:true,
   });
 
+  console.log(process.env.CLOUDINARY_API_KEY);
+  
 
 const router = express.Router();
 
@@ -180,19 +190,11 @@ router.post("/userDashboard",isAuth,async(req,res)=>{
             const id = req.User._id;
             console.log(id);
             cloudinary.uploader.upload(file.tempFilePath,async (err,result)=>{
-                console.log("the result: ",result);
                 const user = await User.findById(id);
-                console.log("the type of result:",typeof(result.url));
-                console.log("the id of user:",id);
                 user.url = result.url;
                 await user.save();
-                res.render("userDashboard",{
-                    url:result.url,
-                    token,
-                    name,
-                    email,
-                    address
-                })
+                // await User.findByIdAndUpdate(id,{$set:{url:result.url}})
+                res.redirect('userDashboard')
             })
     } catch (error) {
         console.log("error in uploading image");
