@@ -30,14 +30,15 @@ app.set('view engine','ejs')
 
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
+app.use(function(err,req,res,next){
+    res.status(403).send("<h1>So sorry something is wrong from our side</h1>");
+})
 // app.use(express.static('public'))
 app.use(CookieParser());
 
 app.use(router);
 
-app.use(function(err,req,res,next){
-    res.status(403).send("<h1>So sorry something is wrong from our side</h1>");
-})
+
 export default app;
 
 
