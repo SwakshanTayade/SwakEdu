@@ -110,6 +110,12 @@
   <div class="col-12">
     <label for="inputAddress" class="form-label">Password</label>
     <input type="password" class="form-control" id="inputAddress" placeholder="Password" name="password">
+    <% const password = locals.password %>
+    <% if(password){ %>
+      <p style="color: red;">
+        <%= locals.password %>
+      </p>
+      <% } %>
   </div>
   <div class="col-12">
     <label for="inputAddress2" class="form-label">Confirm Password</label>

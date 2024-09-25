@@ -181,7 +181,6 @@ export const userLogin = async (req,res)=>{
     }
 
     const passCheck = await bcrypt.compare(password,findEmail.password);
-
     if(!passCheck) {
         return res.render("login",{
             email,
@@ -262,7 +261,11 @@ export const userRegister = async (req,res)=>{
     }
 
     const hashedPass = await bcrypt.hash(password,10);
-
+    if(password!=cpassword) {
+            return res.status(403).render("register",{
+                password:"password don't match"
+            });
+    }
     const user = await User.create({
         name,
         email,
@@ -304,8 +307,10 @@ export const mentorRegister = async(req,res)=>{
             email
         })
     }
+    else if(password!=cpassword) return res.render("registerMentor",{
+        password:"Password don't match"
+    })
     const hashedPass = await bcrypt.hash(password,10);
-
     const mentor = await mentorD.create({
         name,
         email,
