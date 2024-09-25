@@ -35,6 +35,9 @@ app.use(CookieParser());
 
 app.use(router);
 
+app.use(function(err,req,res,next){
+    res.status(403).send("<h1>So sorry something is wrong from our side</h1>");
+})
 export default app;
 
 
