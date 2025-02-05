@@ -33,81 +33,7 @@
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img src="/images/Designer.png" alt="SwakEdu" class="img-fluid" style="max-height: 70px;">
-            </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
-                aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-between" id="navbarScroll" >
-                <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/">Home</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Log in as
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-                            <li><a class="dropdown-item" href="/login">User</a></li>
-                            <li><a class="dropdown-item" href="/loginMentor">Mentor</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Logout
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-                            <li><a class="dropdown-item" href="/logout">Logout</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Register As
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-                            <li><a class="dropdown-item" href="/register">User</a></li>
-                            <li><a class="dropdown-item" href="/registerMentor">Mentor</a></li>
-                        </ul>
-                    </li>
-                    <!-- <li class="nav-item">
-                        <a class="nav-link" href="/register">Register</a>
-                    </li> -->
-                    <li class="nav-item">
-                      <a class="nav-link" href="/adminPage">Mentor</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="/usersAndmentors">People</a>
-                    </li>
-                    <% if(token) {%>
-                      <li class="nav-item">
-                        <a class="nav-link" href="/userDashboard"> <i class="fa-solid fa-circle-user" style="font-size: xx-large;"></i> </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="false">
-                          <%=locals.name %>
-                        </a>
-                      </li>
-                      <% } %>
-                </ul>
-                <form method="get" action="/search" class="d-flex">
-                    <input  name="query" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-              </div>
-              <div class=" rounded-start bg-white ">
-
-              </div>
-        </div>
-    </nav>
+  <%-include('./navbar.ejs')  %>
 
     <div class="container-fluid" style=" height: max-content; border: 2px solid red;">
 
@@ -192,38 +118,7 @@
           </div>
 
     
-          <footer class="page-footer shadow bg-dark text-white">
-            <div class="d-flex flex-column mx-auto py-5" style="width: 80%">
-              <div class="d-flex flex-wrap justify-content-between">
-                <div>
-                  <a href="/" class="d-flex align-items-center p-0 text-white">
-                    <img alt="logo" src="./images/Designer.png" width="30px" />
-                    <span class="ms-3 h5 font-weight-bold">SWAKEDU</span>
-                  </a>
-                  <p class="my-3 text-secondary text-white" style="width: 250px">
-                    <i class="fa-solid fa-location-dot text-white"></i>  Yashodham colony, Malkapur, Buldhana Road, 443101, Maharashtra
-                  </p>
-                  <span class="mt-4">
-                    <button class="btn btn-dark btn-flat p-2">
-                      <a class="text-white" href="/"><i class="fa-brands fa-instagram"></i></a>
-                  </button>
-                  <button class="btn btn-dark btn-flat p-2">
-                      <a class="text-white" href="/"><i class="fa-brands fa-facebook"></i></a>
-                  </button>
-                  <button class="btn btn-dark btn-flat p-2">
-                      <a class="text-white" href="/"><i class="fa-brands fa-linkedin"></i></a>
-                    </button>
-                  </span>
-                </div>
-              
-                
-                
-                
-                
-              </div>
-              <small class="text-center mt-5">&copy; SWAKEDU, 2024. All rights reserved.</small>
-            </div>
-          </footer>
+          <%-include('./footer.ejs')  %>
 
 </body>
 </html>

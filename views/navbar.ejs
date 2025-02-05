@@ -1,0 +1,76 @@
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid bg-red-500">
+            <a class="navbar-brand" href="#">
+                <img src="/images/Designer.png" alt="SwakEdu" class="img-fluid" style="max-height: 70px;">
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
+                aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between" id="navbarScroll" >
+                <ul class="navbar-nav me-auto my-2 my-lg-0 " style="--bs-scroll-height: 100px;">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Log in as
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                            <li><a class="dropdown-item" href="/login">User</a></li>
+                            <li><a class="dropdown-item" href="/loginMentor">Mentor</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Logout
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                            <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Register As
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                            <li><a class="dropdown-item" href="/register">User</a></li>
+                            <li><a class="dropdown-item" href="/registerMentor">Mentor</a></li>
+                        </ul>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" href="/register">Register</a>
+                    </li> -->
+                    <li class="nav-item">
+                      <a class="nav-link" href="/adminPage">Create Course</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/usersAndmentors">People</a>
+                    </li>
+                    <% if(locals.token) {%>
+                      <li class="nav-item">
+                        <a class="nav-link" href="/userDashboard"> <i class="fa-solid fa-circle-user" style="font-size: xx-large;"></i> </a>
+                      </li>
+                      <% } %>
+                    <% if(locals.token2) {%>
+                      <li class="nav-item">
+                        <a class="nav-link" href="/adminDashboard"> <i class="fa-solid fa-circle-user" style="font-size: xx-large;"></i> </a>
+                      </li>
+                      <% } %>
+                </ul>
+                <form method="get" action="/search" class="d-flex">
+                    <input  name="query" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+              </div>
+              <div class=" rounded-start bg-white ">
+
+              </div>
+        </div>
+    </nav>
